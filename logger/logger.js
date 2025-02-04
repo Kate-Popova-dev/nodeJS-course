@@ -4,6 +4,9 @@ import levels from "./levels.js"
 import formatMessage from "./formatter.js"
 import errorsType from "../errors/errorsType.js";
 import {LOCAL_ENV} from "../variables.js";
+import {EventEmitter} from "node:events";
+
+export const event = new EventEmitter();
 
 class Logger {
 
@@ -53,15 +56,21 @@ class Logger {
 
         const formattedMsg = formatMessage(level, msg)
 
-        if (process.env.APP_ENV === LOCAL_ENV) {
-            console.log(formattedMsg)
-        } else {
-            fs.appendFile(this.logPath, `${formattedMsg} `, (err) => {
-                if (err) {
-                    console.error("Error while try to put data to file", err.message)
-                }
+        // if (process.env.APP_ENV === LOCAL_ENV) {
+        //     console.log(formattedMsg)
+        // } else {
+        event.on(level, () => {
+            setImmediate(() => {
+                fs.appendFile(this.logPath, `${formattedMsg} `, (err) => {
+                    if (err) {
+                        console.error("Error while try to put data to file", err.message)
+                    }
+                })
+                console.log('in logger');
+                console.log('level: ', level);
             })
-        }
+        })
+        event.emit(level)
     }
 
     info(msg) {
