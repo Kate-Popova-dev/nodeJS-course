@@ -1,10 +1,10 @@
 import fs from "node:fs"
-import path from "node:path"
 import levels from "./levels.js"
-import formatMessage from "./formatter.js"
 import errorsType from "../errors/errorsType.js";
 import {LOCAL_ENV} from "../variables.js";
 import {EventEmitter} from "node:events";
+import MessageTransform from "../transformers/messageTransform.js";
+import formatMessage from "./formatter.js";
 
 export const event = new EventEmitter();
 
@@ -12,15 +12,10 @@ class Logger {
 
     constructor(logPath = 'logs/app.log') {
         this.logPath = logPath
-
-        if (!fs.existsSync(path.dirname(this.logPath))) {
-            fs.mkdirSync(
-                path.dirname(this.logPath),
-                {
-                    recursive: true
-                }
-            )
-        }
+        this.writeStream = fs.createWriteStream(this.logPath, {
+            encoding: "utf8",
+            flags: "a"
+        })
     }
 
     __additionalErrorTypeChecks(error, errorMessage) {
@@ -56,21 +51,15 @@ class Logger {
 
         const formattedMsg = formatMessage(level, msg)
 
-        // if (process.env.APP_ENV === LOCAL_ENV) {
-        //     console.log(formattedMsg)
-        // } else {
-        event.on(level, () => {
+        if (process.env.APP_ENV !== LOCAL_ENV) {
+            console.log(formattedMsg);
+        } else {
             setImmediate(() => {
-                fs.appendFile(this.logPath, `${formattedMsg} `, (err) => {
-                    if (err) {
-                        console.error("Error while try to put data to file", err.message)
-                    }
-                })
-                console.log('in logger');
-                console.log('level: ', level);
+                const msgTransform = new MessageTransform();
+                msgTransform.pipe(this.writeStream);
+                msgTransform.write({'message': msg, 'type': level});
             })
-        })
-        event.emit(level)
+        }
     }
 
     info(msg) {
