@@ -2,11 +2,8 @@ import fs from "node:fs"
 import levels from "./levels.js"
 import errorsType from "../errors/errorsType.js";
 import {LOCAL_ENV} from "../variables.js";
-import {EventEmitter} from "node:events";
 import MessageTransform from "../transformers/messageTransform.js";
 import formatMessage from "./formatter.js";
-
-export const event = new EventEmitter();
 
 class Logger {
 
