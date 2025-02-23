@@ -48,7 +48,7 @@ class Logger {
 
         const formattedMsg = formatMessage(level, msg)
 
-        if (process.env.APP_ENV !== LOCAL_ENV) {
+        if (process.env.APP_ENV === LOCAL_ENV) {
             console.log(formattedMsg);
         } else {
             setImmediate(() => {

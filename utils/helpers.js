@@ -3,3 +3,12 @@ export function sleep(timeout) {
         res(true)
     }, timeout))
 }
+export function todoValidator(toDoItem, propertyList = ['status', 'text']) {
+    let pass = true;
+    propertyList.forEach(item => {
+        if (!toDoItem.hasOwnProperty(item)) {
+            pass = false;
+        }
+    })
+    return pass;
+}

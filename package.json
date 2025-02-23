@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --env-file .env --watch emitters/LogEmitter.js"
+    "start": "node --env-file .env --watch app.js"
   },
   "type": "module",
   "keywords": [],
@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "chalk": "^5.4.1"
+    "chalk": "^5.4.1",
+    "express": "^4.21.2",
+    "moment": "^2.30.1"
   }
 }

@@ -1,29 +1,37 @@
-import http from "node:http";
+import express from "express";
+import path from "node:path";
+import {toDoRouter} from "./src/routes/todo.js";
+import {fileURLToPath} from "node:url";
+import {restriction} from "./src/middleware/request-restriction.js"
+import Logger from "./logger/logger.js";
+
+const __filname = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filname);
+
+const logger = new Logger();
 
 const APP_PORT = 3000;
 
-const server = http.createServer((request, response) => {
-    let body = '';
-    request.on('data', (chunk) => {
-        body += chunk;
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(restriction);
+app.use("/todo", toDoRouter);
+
+app.use((req, res, next) => {
+    res.status(404).send("Not Found")
+})
+
+app.use((error, req, res, next) => {
+    console.log({
+        msg: error?.message
     })
+    res.status(500).send("error on server side")
+})
 
-    setTimeout(() => {
-        if (Math.floor(Math.random() * 100) + 1 <= 10) {
-            response.writeHead(500, {
-                'Content-Type': 'text/plain',
-                "connection": "close",
-            })
-        } else {
-            response.writeHead(200, {
-                'Content-Type': 'text/plain',
-                "connection": "close",
-            })
-            response.end('Hello World!');
-        }
-    }, (Math.floor(Math.random() * 3) + 1) * 1000);
-});
-
-server.listen(APP_PORT, () => {
-    console.log('Server started on port: ' + APP_PORT)
+app.listen(APP_PORT, () => {
+    logger.info(`Express is listening on port ${APP_PORT}`)
 })
