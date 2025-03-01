@@ -4,11 +4,9 @@ import {idExists} from "../services/todo.service.js";
 export function createTodoValidator(req, res, next) {
 
     const toDoSchema = Joi.object({
-        status: Joi.string().min(2).max(10).required(),
-        text: Joi.string().min(5).max(100).required(),
+        text: Joi.string().min(2).max(100).required(),
     })
-
-    const {error} = toDoSchema.validate(req.body.data, {
+    const {error} = toDoSchema.validate(req.body, {
         allowUnknown: false,
         abortEarly: false
     })
@@ -28,7 +26,7 @@ export function updateTodoValidator(req, res, next) {
         status: Joi.string().min(2).max(10).required(),
     })
 
-    const {error} = toDoSchema.validate(req.body.data, {
+    const {error} = toDoSchema.validate(req.body, {
         allowUnknown: false,
         abortEarly: false
     })

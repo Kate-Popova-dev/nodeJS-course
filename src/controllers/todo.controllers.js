@@ -7,13 +7,13 @@ export function getTodoList(req, res) {
 }
 
 export function createToDo(req, res) {
-    const {toDo} = req.body.data
+    const toDo = req.body
     postToDo(toDo)
 
     return res.json({"status": "OK"})
 }
 
 export function changeToDo(req, res) {
-    changeStatus(req.params.itemId, req.body.data.status);
+    changeStatus(req.params.itemId, req.body.status);
     return res.json({"status": "OK"})
 }

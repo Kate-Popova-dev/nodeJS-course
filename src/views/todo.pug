@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1= title
+    p= "P text"
+    if todoList.length > 1
+        ul
+            each toDo in todoList
+                li status: #{toDo.status}, text #{toDo.text}
+    else
+        p No Todo items
+    div
+        form#formElem
+            input(name='text' type='text' value='Todo')
+            input(type='submit' value='Send')
+        script
+            include ../scripts/postFormData.js
+
