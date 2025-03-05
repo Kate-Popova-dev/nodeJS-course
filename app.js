@@ -5,6 +5,7 @@ import {restriction} from "./src/middleware/request-restriction.js"
 import Logger from "./logger/logger.js";
 import {router} from "./src/routes/index.js"
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 const __filname = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filname);
@@ -16,12 +17,14 @@ const APP_PORT = 3000;
 export const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "src/views"));
+
+app.use(cookieParser(''));
 
 app.use(session({
     secret: 'keyboard cat',
@@ -34,6 +37,7 @@ app.use(session({
 app.use("/", router);
 
 app.use((req, res, next) => {
+
     res.status(404).send("Not Found")
 })
 

@@ -1,10 +1,7 @@
 import {getUserByEmail, postUser, verifyPass} from "../services/user.service.js"
 
-
 export function signUp(req, res) {
     const user = req.body
-
-    console.log({ user })
 
     postUser(user)
 
@@ -18,7 +15,6 @@ export function signIn(req, res) {
     if (!user || !verifyPass(user, password)) {
         return res.render("login", {title: "Login Page", error: "Incorrect creds"})
     }
-
     req.session.user = user
 
     res.redirect("/auth/account")

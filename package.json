@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "chalk": "^5.4.1",
+    "cookie-parser": "^1.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "joi": "^17.13.3",

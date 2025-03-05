@@ -10,5 +10,6 @@ export const router = Router()
 router.use("/users", userRouter)
 router.use("/view", viewRouter)
 router.use("/todo", toDoRouter)
+
 router.use("/auth", authRouter)
 router.use("/jwt", jwtRouter)

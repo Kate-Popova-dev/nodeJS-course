@@ -5,7 +5,6 @@ export function registrationValidator(req, res, next) {
     const userSchema = Joi.object({
         username: Joi.string().min(1).max(10).required(),
         email: Joi.string().email().required(),
-
         password: Joi.string().required(),
     })
 
@@ -15,9 +14,8 @@ export function registrationValidator(req, res, next) {
     })
 
     if (error) {
-        res.render("registration", {
-            title: "Registration Page",
-            error: JSON.stringify(error.details.map(itm => itm.message))
+        res.json({
+            errors: error.details.map(itm => itm.message)
         })
     }
     next()
@@ -36,9 +34,8 @@ export function loginValidator(req, res, next) {
     })
 
     if (error) {
-        res.render("login", {
-            title: "Login Page",
-            error: JSON.stringify(error.details.map(itm => itm.message))
+        res.json({
+            errors: error.details.map(itm => itm.message)
         })
     }
     next()

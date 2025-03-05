@@ -6,7 +6,6 @@ export function createTodoValidator(req, res, next) {
     const toDoSchema = Joi.object({
         text: Joi.string().min(2).max(100).required(),
     })
-    console.log('req', req.body);
 
     const {error} = toDoSchema.validate(req.body, {
         allowUnknown: false,
@@ -39,7 +38,6 @@ export function updateTodoValidator(req, res, next) {
             details: error.details.map(itm => itm.message)
         })
     }
-
     next();
 }
 
