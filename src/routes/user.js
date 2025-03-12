@@ -8,7 +8,7 @@ userRouter.route("/")
     })
     .post((req, res) => {
 
-        console.log("post", { body: req.body })
+        console.log("post", {body: req.body})
 
         res.json({"method": "post"})
     })
@@ -16,7 +16,7 @@ userRouter.route("/")
         res.json({"method": "delete"})
     })
 
-    userRouter.get("/info", (req, res) => {
-        console.log("info")
-        res.json({"method": "get"})
-    })
+userRouter.get("/info", (req, res) => {
+    console.log("info")
+    res.json({"method": "get"})
+})

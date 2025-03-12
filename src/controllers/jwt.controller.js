@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken"
 
 export const JWT_SECRET = 'superSecret'
 
-export function signUp(req, res) {
+export async function signUp(req, res) {
     const user = req.body
 
     console.log("user in signUp: ", user)
 
-    postUser(user)
+    await postUser(user)
     return res.json({
         status: "OK"
     })

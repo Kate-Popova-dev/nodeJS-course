@@ -1,4 +1,6 @@
 import crypto from "crypto";
+import sequelize from "../models/index.js";
+import User from "../models/user.model.js";
 
 const users = [];
 
@@ -16,9 +18,24 @@ export function verifyPass(user, password) {
     return hash === user.password
 }
 
-export function postUser(user) {
-    user['password'] = getHashByPassword(user.password)
-    users.push(user)
+export async function postUser(user) {
+
+    const t = await sequelize.transaction();
+    try {
+        await User.create({
+            name: user.username,
+            email: user.email,
+            password: getHashByPassword(user.password)
+        }, {transaction: t})
+
+        await t.commit()
+
+    } catch (error) {
+
+        console.log({error})
+
+        await t.rollback()
+    }
 }
 
 function getHashByPassword(pass) {

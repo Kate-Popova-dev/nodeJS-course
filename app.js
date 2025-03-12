@@ -6,6 +6,7 @@ import Logger from "./logger/logger.js";
 import {router} from "./src/routes/index.js"
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import sequelize from "./src/models/index.js"
 
 const __filname = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filname);

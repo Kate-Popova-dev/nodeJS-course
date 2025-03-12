@@ -1,4 +1,4 @@
-import {changeStatus, getTodoList as getToDoService, postToDo} from "../services/todo.service.js"
+import {changeStatus, getTodoList as getToDoService, postTodo} from "../services/todo.service.js"
 
 export function getTodoList(req, res) {
     return res.json({
@@ -6,9 +6,9 @@ export function getTodoList(req, res) {
     })
 }
 
-export function createToDo(req, res) {
+export async function createToDo(req, res) {
     const toDo = req.body
-    postToDo(toDo)
+    await postTodo(toDo)
 
     return res.json({"status": "OK"})
 }

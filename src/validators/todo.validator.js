@@ -5,6 +5,7 @@ export function createTodoValidator(req, res, next) {
 
     const toDoSchema = Joi.object({
         text: Joi.string().min(2).max(100).required(),
+        userId: Joi.number().required(),
     })
 
     const {error} = toDoSchema.validate(req.body, {
